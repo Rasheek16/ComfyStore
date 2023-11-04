@@ -1,4 +1,22 @@
+import { Outlet, useNavigation } from "react-router-dom";
+import { Header, Navbar, Loading } from "../Components";
+
 const HomeLayout = () => {
-  return <h1 className="text-4xl">HomeLayout</h1>;
+  const navigation = useNavigation();
+  const isPageLoading = navigation.state === "loading";
+
+  return (
+    <>
+      <Header />
+      <Navbar />
+      {isPageLoading ? (
+        <Loading />
+      ) : (
+        <section className="align-element py-20">
+          <Outlet />
+        </section>
+      )}
+    </>
+  );
 };
 export default HomeLayout;
