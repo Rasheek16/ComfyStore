@@ -1,3 +1,4 @@
+## Comfy Store by John Smilga
 ## Useful Project Resources
 
 - [Complete Project](https://react-vite-comfy-store-v2.netlify.app/)
