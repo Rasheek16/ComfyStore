@@ -37,7 +37,9 @@ const cartSlice = createSlice({
       return defaultState;
     },
     removeItem: (state, action) => {
+      // console.log('working');
       const { cartID } = action.payload;
+      // console.log('workng');
       const product = state.cartItems.find((i) => i.cartID === cartID);
       state.cartItems = state.cartItems.filter((i) => i.cartID !== cartID);
       state.numItemsInCart -= product.amount;
