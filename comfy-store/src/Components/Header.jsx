@@ -1,20 +1,21 @@
-import { useDebugValue } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { clearCart } from "../features/cart/cartSlice";
 import { logoutUser } from "../features/User/userSlice";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.userState.user);
-
+  const queryClient = useQueryClient();
+  const user = useSelector((state) => state.userState.user) || null;
+  // console.log(user);
   const handleLogout = () => {
     navigate("/");
-    dispatch(logoutUser());
     dispatch(clearCart());
+    dispatch(logoutUser());
+    queryClient.removeQueries();
   };
-  console.log(user);
   return (
     <>
       <header className="bg-neutral py-2 text-neutral-content">

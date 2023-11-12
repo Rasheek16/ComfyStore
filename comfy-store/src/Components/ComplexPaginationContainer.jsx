@@ -1,6 +1,6 @@
 import { useLoaderData, useLocation, useNavigate } from "react-router-dom";
 
-const PaginationContainer = () => {
+const ComplexPaginationContainer = () => {
   const { meta } = useLoaderData();
   // console.log(meta);
   const { pageCount, page } = meta.pagination;
@@ -19,14 +19,59 @@ const PaginationContainer = () => {
   const handlePageChange = (pageNumber) => {
     const searchParams = new URLSearchParams(search);
     searchParams.set("page", pageNumber);
-
-    console.log(search);
-    console.log(pathname);
-    console.log(pageNumber);
     navigate(`${pathname}?${searchParams.toString()}`);
   };
 
+  const addPageButton = ({ pageNumber, activeClass }) => {
+    return (
+      <button
+        onClick={() => handlePageChange(pageNumber)}
+        key={pageNumber}
+        className={`btn btn-xs sm:btn-md border-none join-item ${
+          activeClass ? "bg-base-300 border-base-300" : ""
+        } `}
+      >
+        {pageNumber}
+      </button>
+    );
+  };
+
+  const renderPageButtons = () => {
+    const pageButtons = [];
+    //FIRST BUTTON
+
+    pageButtons.push(addPageButton({ pageNumber: 1, activeClass: page === 1 }));
+    //DOTS
+    if (page > 2) {
+      pageButtons.push(
+        <button className="join-item btn btn-xs sm:btn-md" key="dots-1">
+          ...
+        </button>
+      );
+    }
+
+    //ACTIVE PAGE
+    if (page !== 1 && page !== pageCount) {
+      pageButtons.push(addPageButton({ pageNumber: page, activeClass: true }));
+    }
+    //DOTS
+    if (page < pageCount - 1) {
+      pageButtons.push(
+        <button className="join-item btn btn-xs sm:btn-md" key="dots-2">
+          ...
+        </button>
+      );
+    }
+    //LAST BUTTON
+    pageButtons.push(
+      addPageButton({ pageNumber: pageCount, activeClass: page === pageCount })
+    );
+
+    return pageButtons;
+  };
+
   if (pageCount < 2) return null;
+
   return (
     <div className="mt-16 flex justify-end">
       <div className="join">
@@ -41,19 +86,7 @@ const PaginationContainer = () => {
         >
           prev
         </button>
-        {pages.map((pageNumber) => {
-          return (
-            <button
-              onClick={() => handlePageChange(pageNumber)}
-              key={pageNumber}
-              className={`btn btn-xs sm:btn-md border-none join-item ${
-                pageNumber === page ? "bg-base-300 border-base-300" : ""
-              } `}
-            >
-              {pageNumber}
-            </button>
-          );
-        })}
+        {renderPageButtons()}
         <button
           className="btn btn-xs sm:btn-md join-item"
           onClick={() => {
@@ -68,4 +101,4 @@ const PaginationContainer = () => {
     </div>
   );
 };
-export default PaginationContainer;
+export default ComplexPaginationContainer;
